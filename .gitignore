@@ -1,0 +1,21 @@
+# Java
+target/
+*.class
+*.jar
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ
+.idea/
+*.iml
+
+# Node
+node_modules/
+build/
+dist/
+
+# Env
+.env
+
+# OS
+.DS_Store
