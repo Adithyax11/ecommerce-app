@@ -3,6 +3,10 @@ package com.adithya.demo.controller;
 import com.adithya.demo.entity.Product;
 import com.adithya.demo.repository.ProductRepository;
 import org.springframework.web.bind.annotation.*;
+import com.adithya.demo.spec.ProductSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 @RestController
@@ -15,8 +19,15 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public Page<Product> getAll(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            Pageable pageable) {
+        Specification<Product> spec = Specification.where(ProductSpecification.hasCategory(categoryId))
+                .and(ProductSpecification.hasMinPrice(minPrice))
+                .and(ProductSpecification.hasMaxPrice(maxPrice));
+        return productRepository.findAll(spec, pageable);
     }
 
     @GetMapping("/{id}")
