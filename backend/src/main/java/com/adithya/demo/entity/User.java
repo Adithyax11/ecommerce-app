@@ -1,6 +1,7 @@
 package com.adithya.demo.entity;
 
 import com.adithya.demo.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class User {
     private String username;
     @Column(unique = true, nullable = false)
     private String email;
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
