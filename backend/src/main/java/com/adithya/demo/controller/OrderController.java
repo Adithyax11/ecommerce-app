@@ -5,6 +5,7 @@ import com.adithya.demo.entity.*;
 import com.adithya.demo.enums.OrderStatus;
 import com.adithya.demo.enums.Role;
 import com.adithya.demo.repository.*;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
@@ -18,13 +19,16 @@ public class OrderController {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public OrderController(OrderRepository orderRepository, CartRepository cartRepository,
-                           CartItemRepository cartItemRepository, UserRepository userRepository) {
+                           CartItemRepository cartItemRepository, UserRepository userRepository,
+                           SimpMessagingTemplate messagingTemplate) {
         this.orderRepository = orderRepository;
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     private User getCurrentUser(Authentication auth) {
@@ -86,6 +90,8 @@ public class OrderController {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("order not found"));
         order.setStatus(req.getStatus());
-        return orderRepository.save(order);
+        orderRepository.save(order);
+        messagingTemplate.convertAndSend("/topic/orders/" + order.getId(), order.getStatus());
+        return order;
     }
 }

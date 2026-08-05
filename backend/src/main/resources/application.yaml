@@ -7,3 +7,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+razorpay:
+  key-id: rzp_test_TM3zm6MkLgHjTy
+  key-secret: sBVlaflSJvHN7IMU4aJVlR7Z
