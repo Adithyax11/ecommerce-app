@@ -32,5 +32,14 @@ services:
       mysql:
         condition: service_healthy
 
+  frontend:
+    build: ./frontend
+    container_name: ecommerce-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
 volumes:
   mysql_data:
