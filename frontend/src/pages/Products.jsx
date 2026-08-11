@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../api/axios";
 
 function Products() {
@@ -36,11 +37,11 @@ function Products() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {products.map((p) => (
-                    <div key={p.id} className="border rounded-lg p-4">
+                    <Link key={p.id} to={`/products/${p.id}`} className="border rounded-lg p-4 block hover:shadow-md">
                         <h3 className="font-semibold">{p.name}</h3>
                         <p className="text-gray-500 text-sm">{p.description}</p>
                         <p className="text-orange-600 font-bold mt-2">₹{p.price}</p>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
